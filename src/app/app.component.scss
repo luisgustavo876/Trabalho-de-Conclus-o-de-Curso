@@ -1,0 +1,181 @@
+.menu-header-bg {
+  height: 180px;
+  width: 350px;
+  background: var(--ion-color-primary);
+  transform: rotate(-15deg);
+  border-radius: 10px 10px 10px 50px;
+  margin-left: -18px;
+  margin-top: -50px;
+  margin-bottom: 60px;
+}
+
+.action-button {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  
+  ion-button {
+  text-transform: capitalize;
+  font-weight: 300;
+  --background: var(--ion-color-secondary) ;
+  --border-radius: 7px;
+  --box-shadow: none;
+  color: var(--ion-color-dark) ;
+  }
+
+  ion-icon{
+  margin-right: 1px;
+  }
+}
+
+.menu-items {
+  margin: 0px;
+
+  ion-icon {
+  margin-right: 20px;
+  }
+  
+  ion-item {
+  padding-left: 20px;
+  margin-bottom: 10px;
+  }
+}
+
+.active{
+padding-left: 15px;
+background: transparent;
+
+ion-icon{
+  color: var(--ion-color-dark);
+}
+h6{
+  color: var(--ion-color-medium);
+}
+}
+
+ion-button.light-theme {
+  --background: transparent;
+  --border-radius: 0;
+  color: black;
+}
+
+ion-button.dark-theme {
+  --background: transparent;
+  --border-radius: 0;
+  color: white;
+}
+
+.sun-icon,
+.moon-icon {
+  transition: transform 0.5s ease, font-size 0.5s ease;
+  font-size: 24px; /* Tamanho dos ícones (ajuste conforme necessário) */
+}
+
+.rotate-clockwise {
+  animation: rotateClockwise 0.5s ease forwards, shrinkAndHide 0.5s ease forwards;
+}
+
+.rotate-counterclockwise {
+  animation: rotateCounterclockwise 0.5s ease forwards, growAndShow 0.5s ease forwards;
+}
+
+@keyframes rotateClockwise {
+  from {
+    transform: rotate(100deg) scale(1); /* Começa no tamanho normal */
+  }
+  to {
+    transform: rotate(180deg) scale(1); /* Termina no tamanho normal */
+  }
+}
+
+@keyframes rotateCounterclockwise {
+  from {
+    transform: rotate(180deg) scale(1); /* Começa no tamanho normal */
+  }
+  to {
+    transform: rotate(0deg) scale(1); /* Termina no tamanho normal */
+  }
+}
+
+@keyframes shrinkAndHide {
+  from {
+    font-size: 24px; /* Tamanho do sol */
+    opacity: 1;
+  }
+  to {
+    font-size: 22px; /* Tamanho menor que o do sol */
+    opacity: 0;
+  }
+}
+
+@keyframes growAndShow {
+  from {
+    font-size: 20px; /* Tamanho menor que o do sol */
+    opacity: 0;
+  }
+  to {
+    font-size: 14px; /* Tamanho do sol */
+    opacity: 1;
+  }
+}
+
+
+
+
+
+.flex-container {
+  display: flex;
+  justify-content: flex-start; /* Alinhar todo o conteúdo no início */
+  align-items: center; /* Alinhar verticalmente ao centro, se necessário */
+}
+
+  // ion-segment-button {
+  //   --color-checked: transparent; /* Cor de fundo transparente quando selecionado */
+  //   --color-unchecked: transparent; /* Cor de fundo transparente quando não selecionado */
+  //   --border-radius-checked: 0; /* Borda arredondada desativada */
+  //   --border-radius-unchecked: 0; /* Borda arredondada desativada */
+  //   --border-width-checked: 0; /* Largura da borda desativada quando selecionado */
+  //   --border-width-unchecked: 0; /* Largura da borda desativada quando não selecionado */
+  //   --background: none;
+  // }
+  ion-segment-button {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background: transparent; /* Defina o plano de fundo como transparente ou a cor desejada */
+    ion-icon{
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      color: var(--ion-color-dark);
+      font-size: 25px; //Preferred size here
+    }
+    h6{
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      color: var(--ion-color-medium);
+    }
+  }
+  
+
+  .header-content {
+  position: absolute; 
+  top: 40px; 
+  left: 30px;
+  display: flex;
+  align-items:center; 
+
+  img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; 
+    border: 7px solid var(--ion-color-primary-tint);
+    transform: rotate(15deg); /* Gira a imagem em 45 graus (ajuste conforme necessário) */
+   }
+
+
+} 

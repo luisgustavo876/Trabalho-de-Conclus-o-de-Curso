@@ -1,184 +1,223 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <!-- Linha 1: Quinzena /////////////////////////////////////////////////////// -->
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+
+      <ion-button (click)="anteriorQuinzena()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+
+      <ion-label class="quinzena-nome">{{ Quinzena }}</ion-label>
+      
+      <ion-button (click)="proximaQuinzena()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
+  <!-- Linha 2: Dia ///////////////////////////////////////////////////////// -->
 
   <ion-row>
-    <ion-col size="12" class="ion-text-center">
-      <ion-button (click)="pegarDados()">Recuperar dados</ion-button>
-      <ng-container *ngIf="this.isLoading">
-        <ion-spinner></ion-spinner>
-      </ng-container>
-      <ion-label>{{ this.nome_usuario }}</ion-label>
-      
+    <ion-col>
+      <ion-buttons class="botao-dia" color="secondary">
+        <ion-button (click)="anteriorDia()" slot="start">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <ion-label class="dia-nome">{{ dia }}</ion-label>
+        <ion-button (click)="proximoDia()" slot="end">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+        <ion-button (click)="abrirCalendario()">
+          <ion-icon name="calendar"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-col>
   </ion-row>
 
-  <!-- FORMULÁRIO CRIAR CONTA -->
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="12" size-lg="6">
-      <form #criarContaForm="ngForm" (ngSubmit)="criarConta(criarContaForm.value)">
-        <ion-item lines="none">
-          <ion-label>Criar Conta</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Usuário" name="email" ngModel type="text"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Senha" name="password" ngModel type="password"></ion-input>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-button color="light" slot="start" routerLink="/home">Voltar</ion-button>
-          <ion-button color="light" slot="end" type="submit">Cadastrar</ion-button>
-        </ion-item>
-      </form>
-    </ion-col>
-  </ion-row>
 
-<!-- FORMULÁRIO DE LOGIN -->
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="12" size-lg="6">
-      <form #loginForm="ngForm" (ngSubmit)="realizarLogin(loginForm.value)">
-        <ion-item lines="none">
-          <ion-label>Login</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Usuário" name="email" ngModel type="text"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Senha" name="password" ngModel type="password"></ion-input>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-button color="light" slot="end" type="submit">
-            <ng-container *ngIf="this._authenticate.isLoading">
-              <ion-spinner></ion-spinner>
-            </ng-container>
-            <ng-container *ngIf="!this._authenticate.isLoading">
-              Login
-            </ng-container>
-          </ion-button>
-        </ion-item>
-      </form>
-    </ion-col>
-  </ion-row>
+<!-- conteudo de vdd -->
+<ion-row class="ion-align-items-center ion-justify-content-center custom-row">
+  <ion-col>
+    
+<form class="form-container">
 
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-col size="4">
+        <ion-label>Funcionário:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+            <ion-select  justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione funcionario">
+              <ng-container *ngFor="let funcionario of this.dados.funcionarios">
+                 <ion-select-option value="{{funcionario.nome}}">{{funcionario.nome}}</ion-select-option>
+              </ng-container>
+            </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-col size="4">
+        <ion-label>Sitio:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+            <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione sitio" (ionChange)="setSitio($event)" >
+              <ng-container *ngFor="let sitio of this.dados.sitios">
+                <ion-select-option value="{{sitio.nome}}">{{sitio.nome}}</ion-select-option>
+             </ng-container>
+            </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-col size="4">
+        <ion-label>Quadras:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+            <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione quadra" (ionChange)="setQuadra($event)">
+              <ng-container *ngFor="let sitio of this.dados.sitios">
+                <ng-container *ngIf="this.sitio_selecionado == sitio.nome">
+                  <ng-container *ngFor="let quadra of sitio.quadras">
+                    <ion-select-option value="{{quadra.numero}}">{{quadra.numero}}</ion-select-option>
+                  </ng-container>
+                </ng-container>
+             </ng-container>
+            </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-col size="4">
+        <ion-label>ramal:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+            <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione ramal">
+              <ng-container *ngFor="let sitio of this.dados.sitios">
+                <ng-container *ngIf="this.sitio_selecionado == sitio.nome">
+                  <ng-container *ngFor="let quadra of sitio.quadras">
+                    <ng-container *ngIf="this.quadra_selecionada == quadra.numero">
+                      <ng-container *ngFor="let ramal of quadra.ramal">
+                        <ion-select-option value="{{ramal.numero}}">{{ramal.numero}}</ion-select-option>
+                      </ng-container>
+                    </ng-container>
+                    
+                  </ng-container>
+                </ng-container>
+             </ng-container>
+            </ion-select>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-col size="4">
+        <ion-label>produção:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+   
+        <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione produção" (ionChange)="setProducao($event)">
+          <ion-select-option value="arvores">estrias</ion-select-option>
+          <ion-select-option value="atividade_diaria">Atividade</ion-select-option>
+        </ion-select>
   
-  <!-- FORMULÁRIO PARA INSERIR UM NOVO ALUNO -->
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="12" size-lg="6">
-      <form #inserirAlunoForm="ngForm" (ngSubmit)="inserirAluno(inserirAlunoForm.value)">
-        <ion-item lines="none">
-          <ion-label>Inserir Novo Aluno</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Usuário" name="nome" ngModel type="text"></ion-input>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-button color="light" slot="end" type="submit">Inserir Aluno</ion-button>
-        </ion-item>
-      </form>
-    </ion-col>
-  </ion-row>
+      </ion-col>
+    </ion-row>
+    
+    <!-- Árvores e Corte -->
+    
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row" *ngIf="this.producao === 'arvores'">
+      <ion-col size="4">
+        <ion-label>corte:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+        <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione produção">
+          <ion-select-option value="N">N</ion-select-option>
+          <ion-select-option value="V">V</ion-select-option>
+          <ion-select-option value="F">F</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row" *ngIf="this.producao === 'arvores'">
+      <ion-col size="4">
+        <ion-label>Árvores:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+        <ion-input class="ion-text-end" label-placement="end" placeholder="Quantidade de Árvores" type="number"></ion-input>
+      </ion-col>
+    </ion-row>
+    
+    <!-- Atividade Diária -->
+
+    <ion-row class="ion-align-items-center ion-justify-content-center custom-row" *ngIf="this.producao === 'atividade_diaria'">
+      <ion-col size="4">
+        <ion-label>Atividade Diária:</ion-label>
+      </ion-col>
+    
+      <ion-col size="7">
+        <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione produção">
+          <ion-select-option>Levantamento</ion-select-option>
+          <ion-select-option>Risco</ion-select-option>
+          <ion-select-option>Risco Instalação</ion-select-option>
+          <ion-select-option>Instalação Completa</ion-select-option>
+          <ion-select-option>Diária Revisão</ion-select-option>
+          <ion-select-option>Levantamento</ion-select-option>
+          <ion-select-option>Coleta 25</ion-select-option>
+          <ion-select-option>Coleta 30</ion-select-option>
+          <ion-select-option>Diária Normal</ion-select-option>
+          <ion-select-option>Diária Chuva</ion-select-option>
+          <ion-select-option>Diária Feriado </ion-select-option>
+          <ion-select-option>Levantamento</ion-select-option>
+          <ion-select-option>Raspa B</ion-select-option>
+          <ion-select-option>Raspa N</ion-select-option>
+          <ion-select-option>Raspa V</ion-select-option>
+          <ion-select-option>Carregamento</ion-select-option>
+          <ion-select-option>Falta Justificativa</ion-select-option>
+          <ion-select-option>Falta</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
 
 
-  <!-- LISTAR TODOS ALUNOS -->
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="12" size-lg="6">
-      <ion-item lines="none">
-        <ion-button color="light" slot="end" (click)="listarAlunos()">Listar Alunos</ion-button>
-      </ion-item>
-      <ng-container *ngFor="let aluno of this.alunos">
-        <h1>Nome: {{ aluno['nome'] }}</h1>
-        <h1>Idade: {{ aluno['idade'] }}</h1>
+    <div class="botao-enviar">
+      <ion-button size="medium" color="tertiary"  (click)="salvar()">
+        enviar
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+      </div>
+
+      <ion-button (click)="criarDados()">API</ion-button>
+      <ng-container *ngFor="let dado of this.dados_do_usuario">
+        <h1>ID: {{ dado.id }}</h1>
+        <h1>ID: {{ dado.campos.nome }}</h1>
       </ng-container>
-    </ion-col>
-  </ion-row>
+   
 
 
-  <!-- FORMULÁRIO PARA REMOVER ALUNO -->
-  <ion-row class="ion-justify-content-center">
-    <ion-col size="12" size-lg="6">
-      <ng-container *ngFor="let aluno of this.alunos">
-        <form (ngSubmit)="removerAluno(aluno)">
-          <ion-item>
-            <ion-label>Nome do Aluno: {{ aluno['nome'] }}</ion-label>
-          </ion-item>
-          <ion-item lines="none">
-            <ion-button color="light" slot="end" type="submit">Remover Aluno</ion-button>
-          </ion-item>
-        </form>
-      </ng-container>
-    </ion-col>
-  </ion-row>
 
-
-   <!-- FORMULÁRIO PARA CONSULTAR UM ALUNO -->
-   <ion-row class="ion-justify-content-center">
-    <ion-col size="12" size-lg="6">
-      <form #consultarForm="ngForm" (ngSubmit)="consultarAluno(consultarForm.value)">
-        <ion-item lines="none">
-          <ion-label>Consultar Aluno</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-input label="Usuário" name="nome" ngModel type="text"></ion-input>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-button color="light" slot="end" type="submit">Consultar</ion-button>
-        </ion-item>
-      </form>
-    </ion-col>
-  </ion-row>
-
-
-     <!-- FORMULÁRIO ATUALIZAR UM ALUNO -->
-     <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-lg="6">
-        <form #atualizarForm="ngForm" (ngSubmit)="atualizarDadosAluno(atualizarForm.value)">
-          <ion-item lines="none">
-            <ion-label>Atualizar Aluno</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-input label="Usuário" name="nome" ngModel type="text"></ion-input>
-          </ion-item>
-          <ion-item lines="none">
-            <ng-container *ngIf="this.aluno.id == null">  
-              <ion-button color="light" slot="end" type="submit">Consultar</ion-button>
-            </ng-container>
-            <ng-container *ngIf="this.aluno.id != null">  
-              <ion-button color="light" slot="end" type="submit">Atualizar</ion-button>
-            </ng-container>
-          </ion-item>
-        </form>
-      </ion-col>
-    </ion-row>
-
-
-    <!-- TEMPLATE PARA ENVIAR ARQUIVO PARA O FIREBASE -->
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-lg="6">
-        <ion-item>
-          <input type="file" value="Upload" (change)="memorizarArquivo($event)">
-        </ion-item>
-        <ion-item>
-          <ion-button color="medium" slot="end" size="small" (click)="fazerUpload()">Enviar Tarefa</ion-button>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-lg="6">
-        <ion-item>
-          <img src="https://firebasestorage.googleapis.com/v0/b/projetoexemplo-e640c.appspot.com/o/minha_imagem.jpeg?alt=media&token=5b63e63b-081b-493b-981d-4ff73b18b14e" alt="">
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-
-  
+  </form>
+</ion-col>
+</ion-row>
+  <!-- Adicione seções semelhantes para outros dias -->
 
 </ion-content>
+
+
+<!-- <ion-row class="ion-justify-content-center">
+  <ion-col size="4">
+      <ion-button expand="full" size="medium" color="tertiary"  (click)="salvar()">
+        enviar
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </ion-col>
+    </ion-row> -->

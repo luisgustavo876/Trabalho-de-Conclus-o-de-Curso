@@ -1,0 +1,31 @@
+.sitio-nome {
+    text-align: center;
+    font-size: 24px;
+  }
+  
+  .quadra-nome{
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .small-label {
+    font-size: 18px;
+  }
+  .small-input{
+    font-size: 13px;
+
+  }
+  .item-padrao{
+    width: fit-content;
+    padding: 1px;
+  }
+/* Seletor para remover o padding do div.item-inner */
+/* Seletor para remover o padding do div.item-inner */
+ion-item {
+  --inner-padding-end: 0;
+  --inner-padding-start: 0;
+}
+.item-padrao{
+}
+
+

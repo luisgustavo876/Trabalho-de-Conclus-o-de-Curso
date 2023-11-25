@@ -1,0 +1,70 @@
+<ion-content  [fullscreen]="true">
+  <ion-card class="container">
+    <ion-row>
+      <ion-col>
+        <img alt="Silhouette of mountains" src="../../../assets/wave.png" />
+      </ion-col>
+    </ion-row>
+
+    <ion-card-header>
+      <ion-row class="ion-justify-content-center">
+      <ion-col>
+        <ion-title class="title"> Bem Vindo! </ion-title>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="6">
+        <ion-card-subtitle class="subtitle">Seleciona sua forma de log in</ion-card-subtitle>
+      </ion-col>
+    </ion-row>
+    </ion-card-header>
+
+    <ion-card-content class="main">
+
+
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="5">
+            <ion-button class="form" mode="md" [routerLink]="['/login']" color="primary" fill="outline">login</ion-button>
+          </ion-col>
+
+          <ion-col offset="2"></ion-col>
+  
+          <ion-col size="5">
+            <ion-button class="form" mode="md" [routerLink]="['/cadastro']" color="primary" fill="solid">Cadastro</ion-button>
+          </ion-col>
+        </ion-row>
+
+          <ion-row class="ion-align-items-center ion-justify-content-center">
+            <ion-col>
+                <div class="linha"></div>
+            </ion-col>
+
+                <div class="ou">ou</div>
+
+            <ion-col>
+              <div class="linha"></div>
+          </ion-col>
+          </ion-row>
+
+    <div class="logos">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="4">
+          <ion-button fill="clear">
+            <ion-icon size="large" name="logo-facebook"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-button fill="clear">
+            <ion-icon size="large" name="logo-google"></ion-icon>
+          </ion-button>
+          
+        </ion-col>
+      </ion-row>
+    </div>
+      
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+  

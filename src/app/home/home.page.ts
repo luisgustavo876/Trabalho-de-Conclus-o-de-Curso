@@ -1,185 +1,901 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import { AuthenticateService } from '../services/auth.service';
 import { CrudService } from '../services/crud.service';
 import { Storage, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { MessageService } from '../services/message.service';
+import { AnimationController } from '@ionic/angular';
+import * as moment from 'moment';
+import { ModalController } from '@ionic/angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
+
 export class HomePage {
 
-  alunos = [];
+  dados = {
+    quinzena: null,
+    data:{
+      dia: '',
+      mes: '',
+      ano: '',
+    },
+    funcionarios:[
+      { nome:'Henrique' },
+      { nome:'Cristiano' },
+      { nome:'luis' },
+      { nome:'marcelo' },
+      { nome:'pedro' },
+      { nome:'joao' },
+      { nome:'fabiano' },
+      { nome:'douglas' },
+    ],
+    sitios:[
+      { 
+        nome:'matao' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
 
-  nome = 'Joaozinho';
+            ],
+          },
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+              { numero:12},
+              { numero:13},
+              { numero:14},
+              { numero:15},
+            ],
+          },{
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+            ],
+          },{
+            numero:7, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
 
-  aluno = {
-    nome: null,
-    idade: null,
-    ra: null,
-    id: null
+            ],
+          },
+        ]
+      },
+      { 
+        nome:'primavera' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+          ],},
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+            ],
+          },
+          {
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+            ],
+          },
+        ]
+      },
+
+      { 
+        nome:'vileiro' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+          ],},
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+            ],
+          },
+          {
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+            ],
+          },
+        ]
+      },
+
+      { 
+        nome:'acacia' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+          ],},
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+            ],
+          },
+          {
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+            ],
+          },
+        ]
+      },
+
+      { 
+        nome:'enxovia' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+          ],},
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+            ],
+          },
+          {
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+            ],
+          },
+        ]
+      },
+
+      { 
+        nome:'sta-lucia' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+          ],},
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+            ],
+          },
+          {
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+            ],
+          },
+        ]
+      },
+
+      { 
+        nome:'bela-vista' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+          ],},
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+            ],
+          },
+          {
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+            ],
+          },
+        ]
+      },
+      { 
+        nome:'nsa ' , 
+        quadras: [
+          {
+            numero:1, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+            ],
+          },
+          {
+            numero:2, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+          ],},
+          {
+            numero:3, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+            ],
+          },
+          {
+            numero:4, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+            ],
+          },
+          {
+            numero:5, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+              { numero:8 },
+              { numero:9 },
+              { numero:10 },
+              { numero:11 },
+            ],
+          },
+          {
+            numero:6, 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+            ],
+          },
+          {
+            numero:7 , 
+            ramal:[
+              { numero:1 },
+              { numero:2 },
+              { numero:3 },
+              { numero:4 },
+              { numero:5 },
+              { numero:6 },
+              { numero:7 },
+            ],
+          },
+        ]
+      },
+    ],
+   
+   
+    producao:{
+      atividade:null,
+      arvores:null,
+      atividade_diaria:[
+        {
+          nome:null,
+          selecionado:null
+        }
+      ]
+    }
   }
 
-  public file: any = {};
+  producao:any
+  sitio_selecionado: any;
+  quadra_selecionada:any;
 
-  isLoading: boolean = false;
-  nome_usuario: any;
+  setQuadra (event:any) {
+    this.quadra_selecionada = event.detail.value
+  }
+
+  setSitio (event:any) {
+    this.sitio_selecionado = event.detail.value
+  }
+
+
+  // funcionarios: string[] = [];
+
+  dados_do_usuario: any;
+  
+  
+  data_atual: any;
+  data = {
+    dia: moment().format('DD'),
+    mes: moment().format('MMMM'),
+    ano: moment().format('YYYY'),
+  };
+  dia: any;
+  Quinzena: any;
+
+
 
   constructor(
-    public _authenticate: AuthenticateService,
-    private _crudService: CrudService,
-    public storage: Storage,
-    private _message: MessageService
-  ) { }
+    public crudService:CrudService
+  ) {
+    
+    console.log(moment.locale());
+    this.data_atual = moment().format('MMMM DD YYYY, h:mm:ss a');
+    this.setQuinzena();
+    this.setDia();
 
-  // código PHP
-  /*
-    <?php
-    declare(strict_types=1);
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-    header("Access-Control-Allow-Headers: Content-Type");
+    this.crudService.fetchAll('dados')
+    .then(response => {
+      console.log(response);
+    });
+  }
 
-    sleep(2);
-    echo json_encode([
-        'dados' => 'Resposta da API'
-    ]);
-?>
-  */
+  setProducao(event:any) {
+    this.producao = event.detail.value
+  }
 
-  pegarDados() {
-    this.isLoading = true;
-    fetch('http://localhost/api_fatec/index.php')
+
+  criarDados(){
+    const item = {
+      "nome": "Miranata",
+      "sobrenome": "Filoxina",
+      "telefone": [
+        123,
+        321,
+        999
+      ],
+      "habilidades": [
+        {nome: "jogar futebol"},
+        {nome: "jogar airsoft"}
+      ]
+    };
+
+    fetch('https://us-central1-tcc-ofc.cloudfunctions.net/app/diogo/read',
+    {
+      method: 'GET'
+    })
     .then(response => response.json())
-    .then(resposta => {
-      localStorage.setItem('nome_usuario', JSON.stringify(resposta.usuario_info))
-      console.log('Resposta do localstorage')
-      console.log(localStorage.getItem('nome_usuario'))
+    .then(response => {
+      console.log(response);
+      this.dados_do_usuario = response;
     })
     .catch(erro => {
-      console.log(erro)
+      console.log(erro);
     })
-    .finally(() => {
-      console.log('Processo Finalizado!');
-      this.isLoading = false;
-    })
-  }
-
-
-  criarConta(dados: any){
-    console.log(dados.email);
-  }
-
-  realizarLogin(dados: any) {
-    this._authenticate.login(dados.email, dados.password);
-  }
-
-  inserirAluno(dados: any){
-    this.aluno.nome = dados.nome;
-    // this.aluno.idade = 10;
-    // this.aluno.ra = 321321;
-
-    this._crudService.insert(this.aluno, 'alunos');
-  }
-
-  listarAlunos(){
-    this._crudService.fetchAll('alunos')
-    .then( alunos => {
-      this.alunos = alunos;
+    .finally(()=> {
+      console.warn('Finalizado');
     })
   }
+  
 
-
-  removerAluno(aluno: any){
-    console.log(aluno);
-    this._crudService.remove(aluno.id, 'alunos')
+  salvar() {
+    this.crudService.insert(this.dados, 'dados');
   }
 
-  consultarAluno(dados: any){
-    console.log(dados);
-    this._crudService.fetchByOperatorParam('nome', '==', dados.nome, 'alunos')
-    .then( aluno => {
-      console.log(aluno[0].id);
-    })
-  }
 
-  atualizarDadosAluno(dados: any){
-    if (this.aluno.id == null) {
-      this._crudService.fetchByOperatorParam('nome', '==', dados.nome, 'alunos')
-      .then( aluno => {
-        this.aluno = aluno[0];
-        console.log(this.aluno);
-      })
+  anteriorQuinzena() {
+    let diaAtual = Number(this.data.dia);
+
+    if (diaAtual <= 15) {
+      this.data.dia = '16';
+      this.data.mes = moment(this.data.mes, 'MMMM').subtract(1, 'months').format('MMMM');
     } else {
-      this._crudService.update(this.aluno.id, dados, 'alunos');
-    }
-  }
-
-  memorizarArquivo(event: any) {
-    this.file = event.target.files[0];
-  }
-
-  fazerUpload() {
-    if (!this.file.name) {
-      this._message.show('Favor selecionar o arquivo a ser enviado', 5000);
-      return;
+      this.data.dia = '1';
     }
 
-    // Upload file and metadata to the object 'images/mountains.jpg'
-      const storageRef = ref(this.storage, this.file.name);
-      const uploadTask = uploadBytesResumable(storageRef, this.file);
+    this.setQuinzena();
+    this.setDia();
 
-      // Listen for state changes, errors, and completion of the upload.
-      uploadTask.on('state_changed',
-        (snapshot) => {
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  }
 
-          console.log('Upload is ' + progress + '% done');
+  proximaQuinzena() {
+    let diaAtual = Number(this.data.dia);
 
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Envio pausado');
-              break;
-            case 'running':
-              console.log('Carregando arquivo');
-              this._message.show('Carregando arquivo, favor aguardar!', 2000);
-              break;
-          }
-        },
-        (error) => {
-          // A full list of error codes is available at
-          // https://firebase.google.com/docs/storage/web/handle-errors
-          switch (error.code) {
-            case 'storage/unauthorized':
-              // User doesn't have permission to access the object
-              console.log('Não enviado! Usuário sem permissão');
-              this._message.show('Não enviado! Usuário sem permissão!');
-              break;
-            case 'storage/canceled':
-              // User canceled the upload
-              console.log('Não enviado: upload cancelado');
-              this._message.show('Erro: Upload cancelado!');
-              break;
-            case 'storage/unknown':
-              // Unknown error occurred, inspect error.serverResponse
-              console.log('Não enviado. Ocorreu um erro desconhecido!');
-              this._message.show('Oops! Ocorreu um erro desconhecido!');
-              break;
-          }
+    if (diaAtual <= 15) {
+      this.data.dia = '16';
+    } else {
+      this.data.dia = '1';
+      this.data.mes = moment(this.data.mes, 'MMMM').add(1, 'months').format('MMMM');
+    }
 
-          console.log('Arquivo enviado');
-          this._message.show('Arquivo enviado com sucesso!');
-        },
-        () => {
-          // Upload completed successfully, now we can get the download URL
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log('Url do arquivo é ' + downloadURL)
-          });
-        }
-      );
+    this.setQuinzena();
+    this.setDia();
+  }
+
+  setQuinzena() {
+    let Quinzena = '1°';
+
+    if (Number(this.data.dia) > 15) {
+      Quinzena = '2°';
+    }
+
+    this.Quinzena = Quinzena + ' Quinzena ' + this.data.mes;
+  }
+
+  proximoDia() {
+    const diaAtual = Number(this.data.dia);
+    const ultimoDiaDoMes = moment(this.data.mes, 'MMMM').daysInMonth();
+
+    if (diaAtual < ultimoDiaDoMes) {
+      this.data.dia = String(diaAtual + 1);
+    } else {
+      this.data.dia = '1';
+      this.data.mes = moment(this.data.mes, 'MMMM').add(1, 'months').format('MMMM');
+    }
+
+    this.setQuinzena();
+    this.setDia();
+  }
+
+  anteriorDia() {
+    let diaAtual = Number(this.data.dia);
+
+    if (diaAtual > 1) {
+      this.data.dia = String(diaAtual - 1);
+    } else {
+      const diaAnterior = moment(this.data.mes, 'MMMM').subtract(1, 'months').endOf('month').format('DD');
+      this.data.dia = diaAnterior;
+      this.data.mes = moment(this.data.mes, 'MMMM').subtract(1, 'months').format('MMMM');
+    }
+
+    this.setDia();
+    this.setQuinzena();
+  }
+
+  setDia() {
+    this.dia = 'Dia ' + this.data.dia;
+    this.dados.quinzena=this.Quinzena;
+    this.dados.data = this.data;
+    console.log(this.dados)
+  }
+
+
+
+  abrirCalendario() {
+    // Implemente a lógica para abrir o calendário, se necessário.
   }
 
 }

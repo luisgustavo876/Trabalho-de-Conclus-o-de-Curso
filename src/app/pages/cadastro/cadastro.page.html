@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="#"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="custom-background">
+  <div class="header">
+    <div class="title">Cadastro</div>
+    <ion-text>Faça <i>Cadastro</i> e crie sua conta</ion-text>
+  </div>
+
+  
+  <!-- FORMULÁRIO CRIAR CONTA -->
+<ion-row class="ion-justify-content-center">
+<ion-col size="12" size-lg="6">
+<form #criarContaForm="ngForm" (ngSubmit)="criarConta(criarContaForm.value)">
+
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col size-lg="6">
+      <ion-item class="custom-input" color="secondary">
+        <ion-input color="primary" label-placement="floating" label="name" name="name" ngModel  type="name" placeholder=""></ion-input>
+        <ion-icon slot="end" name="person-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row> 
+
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col size-lg="6">
+      <ion-item class="custom-input" color="secondary">
+        <ion-input color="primary" label-placement="floating" label="E-mail" name="email" ngModel  type="email" placeholder="email@domain.com"></ion-input>
+        <ion-icon slot="end" name="mail-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row> 
+
+  <ion-row class="ion-align-items-center ion-justify-content-center">
+    <ion-col size-lg="6">
+      <ion-item class="custom-input" color="secondary">
+        <ion-input color="primary" label-placement="floating" label="Password" name="password" ngModel [type]="passwordType"></ion-input>
+        <ion-icon slot="end" name="eye-off-outline" *ngIf="passwordType === 'password'" (click)="togglePasswordVisibility()"></ion-icon>
+        <ion-icon slot="end" name="eye-outline" *ngIf="passwordType === 'text'" (click)="togglePasswordVisibility()"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+
+
+
+  <div class="botao-logar">
+    <ion-button color="tertiary" type="submit">Cadastrar</ion-button>
+  </div>
+
+
+</form>
+</ion-col>
+</ion-row>
+
+<ion-row class="ion-align-items-center ion-justify-content-center">
+  <ion-col size-lg="6">
+    <div class="esqueceu-senha">
+      <a [routerLink]="['/reset-password']">Esqueceu a Senha?</a>
+    </div>
+  </ion-col>
+</ion-row>
+
+<ion-row class="ion-align-items-center ion-justify-content-center">
+  <ion-col size-lg="3">
+    <div class="custom-line"></div>
+  </ion-col>
+  <div class="custom-divider">ou</div>
+  <ion-col size-lg="3">
+    <div class="custom-line"></div>
+  </ion-col>
+</ion-row>
+
+  <div class="logos">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="4">
+        <ion-button fill="clear">
+          <ion-icon size="large" name="logo-facebook"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button fill="clear">
+          <ion-icon size="large" name="logo-google"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div class="possui-conta" color="tertiary">
+    <p>Já possui Conta?<a [routerLink]="['/login']">Login</a></p>
+  </div>
+</ion-content>

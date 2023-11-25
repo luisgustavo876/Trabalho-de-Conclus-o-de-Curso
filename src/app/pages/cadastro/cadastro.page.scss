@@ -1,0 +1,91 @@
+
+  /* Estilos do Cabeçalho */
+  ion-header {
+    ion-toolbar {
+      --background: var(--ion-color-primary);
+      color: var(--ion-color-primary-contrast);
+    }
+  }
+  
+  /* Estilos do Título */
+  .header {
+    text-align: center;
+    margin-top: 20px;
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    ion-text {
+      i {
+        font-style: italic;
+      }
+    }
+  }
+  
+  /* Estilos dos Campos de Entrada */
+  .custom-input {
+    margin-top: 18px;
+    border-radius: 12px;
+    margin: 10px;
+  }
+  
+  /* Estilos do Link "Esqueceu a Senha?" */
+  .esqueceu-senha {
+    display: flex;
+    justify-content: flex-end;
+    margin: 2px 7px 0 0;
+    a {
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--ion-color-primary);
+    }
+  }
+  
+  /* Estilos das Linhas "ou" */
+  .custom-line {
+    border: 1px solid;
+    margin: 10px;
+    margin-top: 80px;
+  }
+  
+  .custom-divider {
+    text-align: center;
+    margin: 10px;
+    margin-top: 80px;
+  }
+  
+  /* Estilos dos Logos */
+  .logos {
+    text-align: center;
+    ion-button {
+      ion-icon {
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+  
+  /* Estilos do Link "Login" */
+  .possui-conta {
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 80%;
+    margin-bottom: 50px;
+    a {
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--ion-color-tertiary);
+    }
+  }
+  
+  .botao-logar{
+    text-align: right;
+  margin-top: 2px;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  }

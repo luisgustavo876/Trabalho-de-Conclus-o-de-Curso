@@ -1,0 +1,42 @@
+.quinzena-nome{
+    text-align: center;
+    font-size: 18px;
+  }
+
+.botao-dia{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: var(--ion-color-secondary) ;
+}
+
+ion-select.always-flip::part(icon) {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+ion-select.always-flip.select-expanded::part(icon) {
+  transform: rotate(180deg);
+}
+  
+  .botao-enviar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:  10px 0 0 0;
+    
+    ion-button {
+    text-transform: capitalize;
+    font-weight: 300;
+    --border-radius: 12px;
+    width: 45%;
+    }
+  
+    ion-icon{
+    margin-right: 1px;
+    }
+  }
+
+  

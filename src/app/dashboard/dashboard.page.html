@@ -1,0 +1,112 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-row class="ion-align-items-center ion-justify-content-center" >
+      <!-- Seletor para escolher a unidade de tempo -->
+      <ion-col class="botao-escolha">
+        <ion-button color="secondary" class="select-button">
+          <ion-select [(ngModel)]="selectedTimeUnit" interface="popover" (ionChange)="unidadeTempoSelecionada()">
+            <ion-select-option value="ano">Ano</ion-select-option>
+            <ion-select-option value="mes">Mês</ion-select-option>
+            <ion-select-option value="quinzena">Quinzena</ion-select-option>
+          </ion-select>
+        </ion-button>
+      </ion-col>
+
+      <ion-col class="botao-visibilidade-segment">
+        <ion-button color="tertiary" (click)="toggleSegmentVisibility()">
+          <ion-icon name="bar-chart-outline" class="select-icon"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="segmentVisivel" color="secondary">
+    <!-- Ion-segment (mostrado condicionalmente) -->
+    <ion-segment color="primary" [scrollable]="true" value="heart" >
+      <ion-segment-button value="primavera">
+        primavera
+      </ion-segment-button>
+      <ion-segment-button value="matao">
+        matao
+      </ion-segment-button>
+      <ion-segment-button value="vileiro">
+        vileiro
+      </ion-segment-button>
+      <ion-segment-button value="acacia">
+        acacia
+      </ion-segment-button>
+      <ion-segment-button value="enxovia">
+        enxovia
+      </ion-segment-button>
+      <ion-segment-button value="sta-lucia">
+        sta-lucia
+      </ion-segment-button>
+      <ion-segment-button value="bela-vista">
+        bela-vista
+      </ion-segment-button>
+      <ion-segment-button value="nsa">
+        nsa
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-toolbar color="secondary">
+    <!-- Conteúdo do Ano -->
+    <div *ngIf="selectedTimeUnit === 'ano'" class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-buttons>
+        <ion-button (click)="anteriorAno()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <ion-label class="ano-nome">{{ selectedYear }}</ion-label>
+        <ion-button (click)="proximoAno()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+
+    <!-- Conteúdo do Mês -->
+    <div *ngIf="selectedTimeUnit === 'mes'" class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-buttons>
+        <ion-button (click)="anteriorMes()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <ion-label class="mes-nome">{{ selectedMonth }}</ion-label>
+        <ion-button (click)="proximoMes()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+
+    <!-- Conteúdo da Quinzena -->
+    <div *ngIf="selectedTimeUnit === 'quinzena'" class="ion-align-items-center ion-justify-content-center custom-row">
+      <ion-buttons>
+        <ion-button (click)="anteriorQuinzena()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <ion-label class="quinzena-nome">{{ Quinzena }}</ion-label>
+        <ion-button (click)="proximaQuinzena()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </ion-toolbar>
+
+
+
+  
+
+
+
+</ion-content>
