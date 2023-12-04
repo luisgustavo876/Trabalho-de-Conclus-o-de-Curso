@@ -28,10 +28,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
   },
   {
-    path: 'reset-password',
-    loadChildren: () => import('./pages/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
-  },
-  {
     path: 'sitio',
     loadChildren: () => import('./mapa/sitio/sitio.module').then( m => m.SitioPageModule)
   },

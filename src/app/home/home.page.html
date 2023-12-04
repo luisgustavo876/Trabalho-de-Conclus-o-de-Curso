@@ -140,9 +140,11 @@
     
       <ion-col size="7">
         <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione produção">
-          <ion-select-option value="N">N</ion-select-option>
-          <ion-select-option value="V">V</ion-select-option>
-          <ion-select-option value="F">F</ion-select-option>
+
+            <ng-container *ngFor="let corte of this.dados.producao.cortes">
+               <ion-select-option value="{{corte.nome}}">{{corte.nome}}</ion-select-option>
+            </ng-container>
+
         </ion-select>
       </ion-col>
     </ion-row>
@@ -153,9 +155,13 @@
       </ion-col>
     
       <ion-col size="7">
-        <ion-input class="ion-text-end" label-placement="end" placeholder="Quantidade de Árvores" type="number"></ion-input>
+        <ng-container *ngFor="let arvore of this.dados.producao.Arvores; let i = index">
+          <ion-input class="ion-text-end" label-placement="end" placeholder="Quantidade de Árvores" type="number" [(ngModel)]="dados.producao.Arvores[i].quantidade"></ion-input>
+        </ng-container>
       </ion-col>
-    </ion-row>
+
+</ion-row>
+
     
     <!-- Atividade Diária -->
 
@@ -166,25 +172,12 @@
     
       <ion-col size="7">
         <ion-select justify="end" class="always-flip" toggleIcon="caret-down-sharp" interface="popover" placeholder="Selecione produção">
-          <ion-select-option>Levantamento</ion-select-option>
-          <ion-select-option>Risco</ion-select-option>
-          <ion-select-option>Risco Instalação</ion-select-option>
-          <ion-select-option>Instalação Completa</ion-select-option>
-          <ion-select-option>Diária Revisão</ion-select-option>
-          <ion-select-option>Levantamento</ion-select-option>
-          <ion-select-option>Coleta 25</ion-select-option>
-          <ion-select-option>Coleta 30</ion-select-option>
-          <ion-select-option>Diária Normal</ion-select-option>
-          <ion-select-option>Diária Chuva</ion-select-option>
-          <ion-select-option>Diária Feriado </ion-select-option>
-          <ion-select-option>Levantamento</ion-select-option>
-          <ion-select-option>Raspa B</ion-select-option>
-          <ion-select-option>Raspa N</ion-select-option>
-          <ion-select-option>Raspa V</ion-select-option>
-          <ion-select-option>Carregamento</ion-select-option>
-          <ion-select-option>Falta Justificativa</ion-select-option>
-          <ion-select-option>Falta</ion-select-option>
-        </ion-select>
+
+            <ng-container *ngFor="let atividade of this.dados.producao.atividade_diaria">
+               <ion-select-option value="{{atividade.nome}}">{{atividade.nome}}</ion-select-option>
+            </ng-container>
+
+          </ion-select>
       </ion-col>
     </ion-row>
 
@@ -196,11 +189,11 @@
       </ion-button>
       </div>
 
-      <ion-button (click)="criarDados()">API</ion-button>
+      <!-- <ion-button (click)="criarDados()">API</ion-button>
       <ng-container *ngFor="let dado of this.dados_do_usuario">
         <h1>ID: {{ dado.id }}</h1>
         <h1>ID: {{ dado.campos.nome }}</h1>
-      </ng-container>
+      </ng-container> -->
    
 
 

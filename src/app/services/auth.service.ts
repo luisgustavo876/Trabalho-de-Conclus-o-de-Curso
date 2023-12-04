@@ -17,6 +17,17 @@ export class AuthenticateService {
         private _message: MessageService,
         private _router: Router,
     ) { }
+
+    registrationSuccess: boolean = false;
+
+  showSuccessAlert(): void {
+    this.registrationSuccess = true;
+    this._message.show('Conta criada com sucesso! Realize o Login!!!', this.duration);
+  }
+
+  resetRegistrationStatus(): void {
+    this.registrationSuccess = false;
+  }
     
     /*
     * @description: Registra um novo usuário

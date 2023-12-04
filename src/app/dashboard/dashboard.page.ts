@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as moment from 'moment';
 import { PopoverController } from '@ionic/angular';
+import { Chart } from 'chart.js/auto';
+
+// ... restante do código ...
+
 
 
 @Component({
@@ -8,7 +12,7 @@ import { PopoverController } from '@ionic/angular';
   templateUrl: 'dashboard.page.html',
   styleUrls: ['dashboard.page.scss'],
 })
-export class DashboardPage {
+export class DashboardPage implements AfterViewInit{
   selectedYearVisible: boolean = true;
   selectedMonthVisible: boolean = false;
   selectedQuinzenaVisible: boolean = false;
@@ -114,7 +118,7 @@ export class DashboardPage {
   }
 
   unidadeTempoSelecionada() {
-    // Função a ser chamada quando a unidade de tempo é alterada
+
   }
 
   async abrirSelecaoUnidadeTempo() {
@@ -133,16 +137,43 @@ export class DashboardPage {
       this.selectedTimeUnit = data.unidadeTempo;
     }
   }
+
+  @ViewChild('streaksChartCanvas', { static: true }) streaksChartCanvas?: ElementRef;
+
+
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit called');
+    this.createSampleChart();
+  }
+
   
-  
 
+  createSampleChart() {
+    if (this.streaksChartCanvas) {
+      const labels = ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'];
+      const data = [10, 20, 15, 25, 30];
 
-
-
-
-
-
-
+      const ctx = this.streaksChartCanvas.nativeElement.getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Sample Data',
+            data: data,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  }
 }
-
-

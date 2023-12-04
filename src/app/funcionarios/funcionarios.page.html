@@ -5,16 +5,14 @@
       <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
 
-      <ion-row>
-        <ion-segment [(ngModel)]="funcionarioSelecionado" (ionChange)="selecionarFuncionario()" *ngIf="mostrarSegmentFuncionario">
-          <ion-segment-button *ngFor="let funcionario of funcionarios" [value]="funcionario">
-            {{ funcionario }}
-          </ion-segment-button>
-        </ion-segment>
-      </ion-row>
-
-    <div class="funcionario-nome">
-      {{ funcionarioSelecionado || funcionarios[0] }}
+    <ion-segment [(ngModel)]="funcionarioSelecionado" (ionChange)="selecionarFuncionario()" *ngIf="mostrarSegmentFuncionario && funcionarioSelecionado">
+      <ion-segment-button *ngFor="let funcionario of funcionarios" [value]="funcionario">
+        {{ funcionario.nome }}
+      </ion-segment-button>
+    </ion-segment>
+    
+    <div class="funcionario-nome" >
+      {{ funcionarioSelecionado.nome }}
     </div>
 
     <ion-buttons slot="end">
@@ -34,7 +32,9 @@
   <ion-button (click)="anteriorQuinzena()">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-button>
+
   <ion-label class="quinzena-nome">{{ Quinzena }}</ion-label>
+  
   <ion-button (click)="proximaQuinzena()">
     <ion-icon name="arrow-forward"></ion-icon>
   </ion-button>
@@ -60,6 +60,51 @@
 
 </ion-col>
 </ion-row>
+
+
+<ion-row class="ion-align-items-center ion-justify-content-center custom-row">
+  <ion-col size="10">
+  <ion-card class="card-margin">
+
+    <ion-card-header class="ion-card-header">
+      <ion-card-title>Estrias</ion-card-title>
+      <ion-card-subtitle>Arvores</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content class="content-2">
+      <ion-list>
+        <ion-item>
+
+          <ion-row class="ion-justify-content-center ion-align-items-center">
+  
+            <ion-col>
+              <ion-item class="item-padrao no-padding-item">
+                <ion-label class="small-label" position="stacked">N</ion-label>
+              </ion-item>
+            </ion-col>
+  
+            <ion-col>
+              <ion-item class="no-padding-item item-padrao">
+                <ion-label class="small-label" position="stacked">V</ion-label>
+              </ion-item>
+            </ion-col>
+  
+            <ion-col>
+              <ion-item class="item-padrao no-padding-item">
+                <ion-label class="small-label" position="stacked">F</ion-label>
+              </ion-item>
+            </ion-col>
+
+          </ion-row>
+
+        </ion-item>
+      </ion-list>
+
+    </ion-card-content>
+  </ion-card>    
+</ion-col>
+</ion-row>
+
   
   <ion-row class="ion-align-items-center ion-justify-content-center custom-row">
     <ion-col size="10">

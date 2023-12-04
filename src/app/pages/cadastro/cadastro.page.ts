@@ -3,6 +3,8 @@ import { AuthenticateService } from '../../services/auth.service';
 import { CrudService } from '../../services/crud.service';
 import { Storage, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage';
 import { MessageService } from 'src/app/services/message.service';
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,12 +14,15 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class CadastroPage implements OnInit {
 
+  
+
   constructor(
     public _authenticate: AuthenticateService,
     private _crudService: CrudService,
     public storage: Storage,
-    private _message: MessageService
+    private _message: MessageService,  // Adicione uma vírgula aqui
   ) { }
+  
 
   ngOnInit() {
   }
@@ -36,10 +41,19 @@ export class CadastroPage implements OnInit {
     this.passwordType = this.passwordVisible ? 'text' : 'password';
   }
 
-  criarConta(dados: any){
-    console.log('email:' +dados.email);
-    console.log('nome:' +  dados.name);
-    this._authenticate.register(dados.email, dados.password);
-    this._authenticate.register(dados.name, dados.tel)
+  criarConta(dados: any) {
+    console.log('email:' + dados.email);
+    console.log('nome:' + dados.name);
+
+    this._authenticate.register(dados.email, dados.password)
+      .then(() => {
+        // Chama o método de sucesso no serviço de autenticação
+        this._authenticate.showSuccessAlert();
+        // Agora, vamos criar e exibir o alerta programaticamente
+
+      })
+      .catch((error: any) => {
+        // Trata erros, se necessário
+      });
   }
 }

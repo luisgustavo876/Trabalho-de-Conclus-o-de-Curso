@@ -7,8 +7,7 @@ import { AnimationController } from '@ionic/angular';
 import * as moment from 'moment';
 import { ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
-
+import { Console } from 'console';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +16,23 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 
 export class HomePage {
+
+  constructor(
+    public crudService:CrudService
+  ) {
+    
+    console.log(moment.locale());
+    this.data_atual = moment().format('MMMM DD YYYY, h:mm:ss a');
+    this.setQuinzena();
+    this.setDia();
+
+    this.crudService.fetchAll('dados')
+    .then(response => {
+      // console.log(response);
+    });
+  }
+
+    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   dados = {
     quinzena: null,
@@ -715,38 +731,46 @@ export class HomePage {
         ]
       },
     ],
-   
-   
+
     producao:{
-      atividade:null,
-      arvores:null,
+      cortes:[
+        { nome:'N'},
+        { nome:'V'},
+        { nome:'F'},
+      ],
+      Arvores: [
+        { quantidade: '' },
+      ],
+      
       atividade_diaria:[
-        {
-          nome:null,
-          selecionado:null
-        }
+        { nome:'Levantamento'},
+        { nome:'Risco'},
+        { nome:'Risco Instalação'},
+        { nome:'Instalação Completa'},
+        { nome:'Diária Revisão'},
+        { nome:'Levantamento'},
+        { nome:'Coleta' },
+        { nome:'Diária Normal'},
+        { nome:'Diária Chuva'},
+        { nome:'Diária Feriado'},
+        { nome:'Levantamento'},
+        { nome:'Raspa B'},
+        { nome:'Raspa N'},
+        { nome:'Raspa V'},
+        { nome:'Carregamento'},
+        { nome:'Falta Justificativa'},
+        { nome:'Falta'},
       ]
     }
   }
 
+  quantidadeArvores: any;
   producao:any
   sitio_selecionado: any;
   quadra_selecionada:any;
-
-  setQuadra (event:any) {
-    this.quadra_selecionada = event.detail.value
-  }
-
-  setSitio (event:any) {
-    this.sitio_selecionado = event.detail.value
-  }
-
-
-  // funcionarios: string[] = [];
+  funcionario_selecionado:any;
 
   dados_do_usuario: any;
-  
-  
   data_atual: any;
   data = {
     dia: moment().format('DD'),
@@ -756,65 +780,33 @@ export class HomePage {
   dia: any;
   Quinzena: any;
 
+    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-  constructor(
-    public crudService:CrudService
-  ) {
+    setQuadra(event: any) {
+      this.quadra_selecionada = event.detail.value;
+      console.log('Quadra selecionada:', this.quadra_selecionada);
+    }
     
-    console.log(moment.locale());
-    this.data_atual = moment().format('MMMM DD YYYY, h:mm:ss a');
-    this.setQuinzena();
-    this.setDia();
+    setSitio(event: any) {
+      this.sitio_selecionado = event.detail.value;
+      console.log('Sitio selecionado:', this.sitio_selecionado);
+    }
+    
+    setProducao(event: any) {
+      this.producao = event.detail.value;
+      console.log('Produção selecionada:', this.producao);
+    }
 
-    this.crudService.fetchAll('dados')
-    .then(response => {
-      console.log(response);
-    });
-  }
-
-  setProducao(event:any) {
-    this.producao = event.detail.value
-  }
-
-
-  criarDados(){
-    const item = {
-      "nome": "Miranata",
-      "sobrenome": "Filoxina",
-      "telefone": [
-        123,
-        321,
-        999
-      ],
-      "habilidades": [
-        {nome: "jogar futebol"},
-        {nome: "jogar airsoft"}
-      ]
-    };
-
-    fetch('https://us-central1-tcc-ofc.cloudfunctions.net/app/diogo/read',
-    {
-      method: 'GET'
-    })
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-      this.dados_do_usuario = response;
-    })
-    .catch(erro => {
-      console.log(erro);
-    })
-    .finally(()=> {
-      console.warn('Finalizado');
-    })
-  }
-  
+    setFuncionario(event:any) {
+      this.funcionario_selecionado = event.detail.value;
+    }
+    
 
   salvar() {
-    this.crudService.insert(this.dados, 'dados');
+    this.crudService.insert(this.dados, 'DADOS');
   }
 
+  // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   anteriorQuinzena() {
     let diaAtual = Number(this.data.dia);
@@ -828,7 +820,6 @@ export class HomePage {
 
     this.setQuinzena();
     this.setDia();
-
   }
 
   proximaQuinzena() {
@@ -884,18 +875,45 @@ export class HomePage {
     this.setDia();
     this.setQuinzena();
   }
-
   setDia() {
     this.dia = 'Dia ' + this.data.dia;
     this.dados.quinzena=this.Quinzena;
     this.dados.data = this.data;
-    console.log(this.dados)
   }
-
-
-
+  
   abrirCalendario() {
-    // Implemente a lógica para abrir o calendário, se necessário.
   }
 
 }
+
+  // criarDados(){
+  //   const item = {
+  //     "nome": "Miranata",
+  //     "sobrenome": "Filoxina",
+  //     "telefone": [
+  //       123,
+  //       321,
+  //       999
+  //     ],
+  //     "habilidades": [
+  //       {nome: "jogar futebol"},
+  //       {nome: "jogar airsoft"}
+  //     ]
+  //   };
+
+  //   fetch('https://us-central1-tcc-ofc.cloudfunctions.net/app/diogo/read',
+  //   {
+  //     method: 'GET'
+  //   })
+  //   .then(response => response.json())
+  //   .then(response => {
+  //     console.log(response);
+  //     this.dados_do_usuario = response;
+  //   })
+  //   .catch(erro => {
+  //     console.log(erro);
+  //   })
+  //   .finally(()=> {
+  //     console.warn('Finalizado');
+  //   })
+  // }

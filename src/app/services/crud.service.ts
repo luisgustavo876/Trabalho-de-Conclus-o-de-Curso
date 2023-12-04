@@ -81,6 +81,11 @@ export class CrudService {
         return data;
     }
 
+
+      
+
+
+
     /*
     * @description: Pegar um item usando um operador específico como = < > <> >= <=
     * @param collection: string
@@ -140,6 +145,12 @@ export class CrudService {
 
         return data;
     }
+
+    // ...
+
+  // ...
+  
+
     
 
     /*
