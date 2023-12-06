@@ -1,15 +1,14 @@
 <ion-header>
   <ion-toolbar color="primary">
 
-<!-- Ícone de menu -->
-    <ion-buttons  slot="start">
-      <ion-menu-button  menu="main-menu">
-      </ion-menu-button>
+    <!-- Ícone de menu -->
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
 
     <!-- Ícone de seta para o sítio anterior -->
-    <ion-buttons  slot="start">
-      <ion-button  (click)="sitioAnterior()">
+    <ion-buttons slot="start">
+      <ion-button (click)="sitioAnterior()">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -17,63 +16,118 @@
     <!-- Segmento para selecionar sítios -->
     <ion-grid>
       <ion-row>
-        <ion-segment [(ngModel)]="sitioSelecionado" (ionChange)="selecionarSitio()" *ngIf="mostrarSegment">
-          <ion-segment-button *ngFor="let sitio of sitios | keyvalue" [value]="sitio.key">
-            {{ sitio.key }}
-        </ion-segment-button>        
+        <ion-segment [(ngModel)]="sitio_selecionado" (ionChange)="setSitio($event)" *ngIf="mostrarSegment">
+          <ion-segment-button *ngFor="let sitio of this.dados.sitios" value="{{sitio.nome}}">
+            {{sitio.nome}}
+          </ion-segment-button>        
         </ion-segment>
       </ion-row>
     </ion-grid>
 
-    <!-- Nome do sítio selecionado -->
-    <div class="sitio-nome" *ngIf="!mostrarSegment">
-      {{ sitioSelecionado }}
-    </div>
-
-    <!-- Ícone de seta para o próximo sítio -->
     <ion-buttons slot="end">
       <ion-button (click)="proximoSitio()">
         <ion-icon name="arrow-forward"></ion-icon>
       </ion-button>
     </ion-buttons>
 
+    <!-- Nome do sítio selecionado -->
+    <div class="sitio-nome" *ngIf="!mostrarSegment">
+      {{ sitio_selecionado }}
+    </div>
+
     <!-- Ícone de pesquisa -->
     <ion-buttons slot="primary">
-      <ion-button  (click)="abrirSelect()">
+      <ion-button (click)="abrirSeletorSitios()">
         <ion-icon name="search"></ion-icon>
       </ion-button>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid>
-     <ion-row *ngIf="sitioSelecionado === 'matao'"  class="segment-content">
+  <ion-header>
+    <ion-toolbar color="secondary">
+
+        <!-- Segmento para selecionar quadras -->
+        <ion-segment [(ngModel)]="quadra_selecionada" placeholder="Selecione quadra" (ionChange)="setQuadra($event)" *ngIf="mostrarSegmentQuadra">
+          <ion-segment-button *ngFor="let quadra of quadrasDoSitioSelecionado" [value]="quadra.numero">
+            {{ quadra.numero }}
+          </ion-segment-button>
+        </ion-segment>
       
-      <ion-header>
-        <ion-toolbar color="secondary">
-          <!-- Seletor de quadras -->
-          <ion-segment [(ngModel)]="quadraSelecionada" (ionChange)="selecionarQuadra()" *ngIf="mostrarSegmentQuadra">
-            <ion-segment-button *ngFor="let quadra of quadrasPrimavera" [value]="quadra">
-              {{ quadra }}
-            </ion-segment-button>
-          </ion-segment>
-    
-          <!-- Nome do sítio selecionado -->
-          <div class="quadra-nome" *ngIf="!mostrarSegment">
-            {{ quadraSelecionada }}
-          </div>
-    
-          <!-- Ícone de pesquisa -->
-          <ion-buttons slot="primary">
-            <ion-button color="primary" (click)="abrirSelectQuadraPrimavera()">
-              <ion-icon name="chevron-down"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-    
+        <!-- Ícone de pesquisa -->
+        <ion-buttons slot="primary">
+          <ion-button color="primary" (click)="abrirSeletorQuadras()">
+            <ion-icon name="search"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      
+        <!-- Nome da quadra selecionada -->
+        <div class="quadra-nome" *ngIf="quadra_selecionada">
+          Quadra {{ quadra_selecionada }}
+        </div>
+
+            </ion-toolbar>
+          </ion-header>
+          
+<!-- Lista de quadras e ramais -->
+<ng-container *ngFor="let quadra of quadrasDoSitioSelecionado">
+  <ion-list *ngIf="quadra_selecionada === quadra.numero">
+    <ng-container *ngFor="let ramal of quadra.ramal; let i = index">
+      <ion-row class="ion-justify-content-center ion-align-items-center">
+
+        <!-- Adicionado estrutura para exibir valores do ramal -->
+        <ng-container *ngFor="let valor of ramal.valores; let j = index">
+          <ion-col>
+            <ion-item class="item-padrao no-padding-item">
+              <ion-label class="small-label" position="stacked">N</ion-label>
+              <ion-input class="small-input" [(ngModel)]="valor.valorN" name="valorN" maxlength="4" type="text" inputmode="numeric" pattern="[0-9]*"></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col>
+            <ion-item class="no-padding-item item-padrao">
+              <ion-label class="small-label" position="stacked">V</ion-label>
+              <ion-input class="small-input" [(ngModel)]="valor.valorV" name="valorV" maxlength="4" type="text" inputmode="numeric" pattern="[0-9]*"></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col>
+            <ion-item class="item-padrao no-padding-item">
+              <ion-label class="small-label" position="stacked">F</ion-label>
+              <ion-input class="small-input" [(ngModel)]="valor.valorF" name="valorF" maxlength="4" type="text" inputmode="numeric" pattern="[0-9]*"></ion-input>
+            </ion-item>
+          </ion-col>
+        </ng-container>
+
+        <!-- Adicionado botão para atualizar valores -->
+        <ion-col>
+          <ion-button (click)="atualizarValoresRamal(ramal, i)">Atualizar</ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ng-container>
+  </ion-list>
+</ng-container>
+
+
+      </ion-content>
+
+
+
       <!-- Lista de quadras e ramais -->
+      <!-- <ng-container *ngFor="let quadra of sitio.quadras">
+        <ion-list *ngIf="quadra_selecionada === quadra.numero">
+          <ng-container *ngFor="let ramal of quadra.ramal; let i = index">
+            <ion-row class="ion-justify-content-center ion-align-items-center">
+
+            </ion-row>
+          </ng-container>
+        </ion-list>
+      </ng-container> -->
+
+      <!-- Lista de quadras e ramais
       <ng-container *ngFor="let quadraInfo of quadrasComRamaisPrimavera">
         <ion-list *ngIf="quadraSelecionada === quadraInfo.quadra">
           <ng-container *ngFor="let ramal of quadraInfo.ramais; let i = index">
@@ -115,114 +169,7 @@
             </ion-row>
           </ng-container>
         </ion-list>
-      </ng-container>
+      </ng-container> -->
 
-    </ion-row>
-    
-    <ion-row *ngIf="sitioSelecionado === 'vileiro'" class="segment-content">
-      <!-- Conteúdo para o sítio Vileiro -->
-    </ion-row>
-    
-    <ion-row *ngIf="sitioSelecionado === 'acacia'" class="segment-content">
-      <!-- Conteúdo para o sítio Acacia -->
-    </ion-row>
-    
-    <!-- Conteúdo para o sítio Primavera //////////////////////////////////////////////////////////////// -->
- 
-    <ion-row *ngIf="sitioSelecionado === 'primavera'" class="segment-content">
-
-      <ion-header>
-        <ion-toolbar color="secondary">
-          <!-- Seletor de quadras -->
-          <ion-segment [(ngModel)]="quadraSelecionada" (ionChange)="selecionarQuadra()" *ngIf="mostrarSegmentQuadra">
-            <ion-segment-button *ngFor="let quadra of quadrasPrimavera" [value]="quadra">
-              {{ quadra }}
-            </ion-segment-button>
-          </ion-segment>
-    
-          <!-- Nome do sítio selecionado -->
-          <div class="quadra-nome" *ngIf="!mostrarSegment">
-            {{ quadraSelecionada }}
-          </div>
-    
-          <!-- Ícone de pesquisa -->
-          <ion-buttons slot="primary">
-            <ion-button color="primary" (click)="abrirSelectQuadraPrimavera()">
-              <ion-icon name="chevron-down"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-    
-      <!-- Lista de quadras e ramais -->
-      <ng-container *ngFor="let quadraInfo of quadrasComRamaisPrimavera">
-        <ion-list *ngIf="quadraSelecionada === quadraInfo.quadra">
-          <ng-container *ngFor="let ramal of quadraInfo.ramais; let i = index">
-            <ion-row class="ion-justify-content-center ion-align-items-center">
-
-              <ion-col>
-                <div class="item-ramal">
-                  <ion-text>Ramal {{ i + 1 }}</ion-text>
-                </div>
-              </ion-col>
-    
-              <ion-col>
-                <ion-item class="item-padrao no-padding-item">
-                  <ion-label class="small-label" position="stacked">N</ion-label>
-                  <ion-input class="small-input" [(ngModel)]="ramal.valorN" name="valorN" maxlength="4" type="text" inputmode="numeric" pattern="[0-9]*"></ion-input>
-                </ion-item>
-              </ion-col>
-    
-              <ion-col>
-                <ion-item class="no-padding-item item-padrao">
-                  <ion-label class="small-label" position="stacked">V</ion-label>
-                  <ion-input class="small-input" [(ngModel)]="ramal.valorV" name="valorV" maxlength="4" type="text" inputmode="numeric" pattern="[0-9]*"></ion-input>
-                </ion-item>
-              </ion-col>
-    
-              <ion-col>
-                <ion-item class="item-padrao no-padding-item">
-                  <ion-label class="small-label" position="stacked">F</ion-label>
-                  <ion-input class="small-input" [(ngModel)]="ramal.valorF" name="valorF" maxlength="4" type="text" inputmode="numeric" pattern="[0-9]*"></ion-input>
-                </ion-item>
-              </ion-col>
-    
-              <ion-col>
-                <ion-item class="item-padrao no-padding-item">
-                  <ion-label class="small-label" position="stacked">SECA</ion-label>
-                  <ion-input class="small-input" [(ngModel)]="ramal.valorSECA" name="valorSECA" maxlength="4" type="text" inputmode="numeric" pattern="[0-9]*"></ion-input>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ng-container>
-        </ion-list>
-      </ng-container>
-    </ion-row>
-    
-<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-    
-    
-    <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-    <ion-row *ngIf="sitioSelecionado === 'enxovia'" class="segment-content">
-      <!-- Conteúdo para o sítio Enxovia -->
-    </ion-row>
-    
-    <ion-row *ngIf="sitioSelecionado === 'sta-lucia'" class="segment-content">
-      <!-- Conteúdo para o sítio Sta. Lucia -->
-    </ion-row>
-    
-    <ion-row *ngIf="sitioSelecionado === 'bela-vista'" class="segment-content">
-      <!-- Conteúdo para o sítio Bela Vista -->
-    </ion-row>
-    
-    <ion-row *ngIf="sitioSelecionado === 'nsa'" class="segment-content">
-      <!-- Conteúdo para o sítio NSA -->
-    </ion-row>
-
-  </ion-grid>
-</ion-content>
-
-
-
+     <!-- </ion-row>
+  </ion-grid> -->

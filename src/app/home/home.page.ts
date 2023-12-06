@@ -28,7 +28,7 @@ export class HomePage {
 
     this.crudService.fetchAll('dados')
     .then(response => {
-      // console.log(response);
+      console.log(response);
     });
   }
 
@@ -42,21 +42,23 @@ export class HomePage {
       ano: '',
     },
     funcionarios:[
-      { nome:'Henrique' },
-      { nome:'Cristiano' },
-      { nome:'luis' },
-      { nome:'marcelo' },
-      { nome:'pedro' },
-      { nome:'joao' },
-      { nome:'fabiano' },
-      { nome:'douglas' },
+      { nome:'Henrique', selecionado:false } ,
+      { nome:'Cristiano', selecionado:false },
+      { nome:'luis', selecionado:false },
+      { nome:'marcelo', selecionado:false },
+      { nome:'pedro', selecionado:false },
+      { nome:'joao', selecionado:false },
+      { nome:'fabiano', selecionado:false },
+      { nome:'douglas', selecionado:false },
     ],
     sitios:[
       { 
-        nome:'matao' , 
+        nome:'matao', 
+        selecionado:false, 
         quadras: [
           {
-            numero:1, 
+            numero:1,
+             selecionado:false,
             ramal:[
               { numero:1 },
               { numero:2 },
@@ -146,6 +148,7 @@ export class HomePage {
       },
       { 
         nome:'primavera' , 
+        selecionado:false, 
         quadras: [
           {
             numero:1, 
@@ -229,6 +232,7 @@ export class HomePage {
 
       { 
         nome:'vileiro' , 
+        selecionado:false, 
         quadras: [
           {
             numero:1, 
@@ -311,7 +315,8 @@ export class HomePage {
       },
 
       { 
-        nome:'acacia' , 
+        nome:'acacia', 
+        selecionado:false, 
         quadras: [
           {
             numero:1, 
@@ -395,6 +400,7 @@ export class HomePage {
 
       { 
         nome:'enxovia' , 
+        selecionado:false, 
         quadras: [
           {
             numero:1, 
@@ -478,6 +484,7 @@ export class HomePage {
 
       { 
         nome:'sta-lucia' , 
+        selecionado:false, 
         quadras: [
           {
             numero:1, 
@@ -560,7 +567,8 @@ export class HomePage {
       },
 
       { 
-        nome:'bela-vista' , 
+        nome:'bela-vista', 
+        selecionado:false, 
         quadras: [
           {
             numero:1, 
@@ -642,7 +650,8 @@ export class HomePage {
         ]
       },
       { 
-        nome:'nsa ' , 
+        nome:'nsa ' ,
+        selecionado:false, 
         quadras: [
           {
             numero:1, 
@@ -785,11 +794,27 @@ export class HomePage {
     setQuadra(event: any) {
       this.quadra_selecionada = event.detail.value;
       console.log('Quadra selecionada:', this.quadra_selecionada);
+      this.dados.sitios.forEach(event => {
+        event.selecionado = false
+    })
+    this.dados.sitios.forEach(event => {
+      if (event.nome == this.quadra_selecionada){
+        event.selecionado = true
+      }
+    })
     }
     
     setSitio(event: any) {
       this.sitio_selecionado = event.detail.value;
       console.log('Sitio selecionado:', this.sitio_selecionado);
+      this.dados.sitios.forEach(event => {
+        event.selecionado = false
+    })
+    this.dados.sitios.forEach(event => {
+      if (event.nome == this.sitio_selecionado){
+        event.selecionado = true
+      }
+    })
     }
     
     setProducao(event: any) {
@@ -799,11 +824,21 @@ export class HomePage {
 
     setFuncionario(event:any) {
       this.funcionario_selecionado = event.detail.value;
+      console.log('funcionario selecionado:', this.funcionario_selecionado);
+      this.dados.funcionarios.forEach(funcionario => {
+          funcionario.selecionado = false
+      })
+      this.dados.funcionarios.forEach(funcionario => {
+        if (funcionario.nome == this.funcionario_selecionado){
+          funcionario.selecionado = true
+        }
+      })
     }
     
 
   salvar() {
-    this.crudService.insert(this.dados, 'DADOS');
+    this.crudService.insert(this.dados, 'amem');
+    console.log(this.salvar)
   }
 
   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -917,3 +952,9 @@ export class HomePage {
   //     console.warn('Finalizado');
   //   })
   // }
+
+
+
+
+
+

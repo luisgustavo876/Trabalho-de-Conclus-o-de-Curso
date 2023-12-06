@@ -38,6 +38,7 @@
         totalFrete: any;
         selectedQuinzena: string = 'quinzena1';
         isModalOpen = false; 
+        
         mostrarSegmentFuncionario: boolean = false; //isso aq esconde o seletor de funcinario
 
         dados: any[] = [];
@@ -210,7 +211,6 @@
           { titulo: 'Total de Faltas', valor: 0 },
           { titulo: 'Total de Frete', valor: 0 },
           { titulo: 'Total de Faltas com Justificativa', valor: 0 },
-          // Adicione mais informações gerais conforme necessário
         ];
 
         atividadesGerais: any[] = [
@@ -223,7 +223,6 @@
           { nome: 'Diária Normal', valor: 0 },
           { nome: 'Diária Chuva', valor: 0 },
           { nome: 'Diária Feriado', valor: 0 },
-          // Adicione mais atividades gerais conforme necessário
         ];              
 
       }

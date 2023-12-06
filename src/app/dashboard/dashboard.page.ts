@@ -3,10 +3,6 @@ import * as moment from 'moment';
 import { PopoverController } from '@ionic/angular';
 import { Chart } from 'chart.js/auto';
 
-// ... restante do código ...
-
-
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'dashboard.page.html',
@@ -24,14 +20,13 @@ export class DashboardPage implements AfterViewInit{
     ano: moment().format('YYYY'),
   };
   Quinzena: any;
-  selectedTimeUnit: string = 'ano'; // Inicialmente definido como 'ano'
+  selectedTimeUnit: string = 'ano';
   selectedYear: number = new Date().getFullYear();
   selectedMonth: string = moment().format('MMMM');
   selectedQuinzena: string = 'quinzena1';
   segmentVisivel: boolean = false; // Propriedade para controlar a visibilidade do ion-segment
 
 
-  // Função para mostrar/ocultar o ion-segment
   toggleSegmentVisibility() {
     this.segmentVisivel = !this.segmentVisivel;
   }
