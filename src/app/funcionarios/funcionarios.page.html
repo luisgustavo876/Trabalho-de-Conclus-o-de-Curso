@@ -1,17 +1,17 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <!-- Linha 1: Quinzena /////////////////////////////////////////////////////// -->
     <ion-buttons slot="start">
       <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
 
+    <!-- Segmento de seleção de funcionários -->
     <ion-segment [(ngModel)]="funcionarioSelecionado" (ionChange)="selecionarFuncionario()" *ngIf="mostrarSegmentFuncionario && funcionarioSelecionado">
-      <ion-segment-button *ngFor="let funcionario of funcionarios" [value]="funcionario">
+      <ion-segment-button *ngFor="let funcionario of dados.funcionarios" [value]="funcionario">
         {{ funcionario.nome }}
       </ion-segment-button>
     </ion-segment>
-    
-    <div class="funcionario-nome" >
+
+    <div class="funcionario-nome" *ngIf="funcionarioSelecionado">
       {{ funcionarioSelecionado.nome }}
     </div>
 
@@ -20,7 +20,6 @@
         <ion-icon name="chevron-down"></ion-icon>
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 

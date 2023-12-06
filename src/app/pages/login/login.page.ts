@@ -33,7 +33,12 @@ export class LoginPage implements OnInit {
   nome_usuario: any;
 
   realizarLogin(dados: any) {
-    this._authenticate.login(dados.email, dados.password);
+    this._authenticate.login(dados.email, dados.password)
+    
+          setTimeout(() => {
+            this._authenticate.redirectTo('/home');
+          }, 2000);
   }
+  
 
 }

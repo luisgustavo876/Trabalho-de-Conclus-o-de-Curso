@@ -20,8 +20,8 @@
         {
           this.data_atual = moment().format('MMMM DD YYYY, h:mm:ss a');
           this.setQuinzena();
-          this.getDados()
-          this.getFuncionarios()
+          this.getDados();
+          this.getFuncionarios();
         }
 
         data_atual: any;
