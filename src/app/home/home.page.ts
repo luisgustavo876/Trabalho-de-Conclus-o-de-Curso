@@ -36,7 +36,7 @@ export class HomePage {
 
   dados = {
     quinzena: null,
-    data:{
+    data: {
       dia: '',
       mes: '',
       ano: '',
