@@ -21,7 +21,7 @@
           this.data_atual = moment().format('MMMM DD YYYY, h:mm:ss a');
           this.setQuinzena();
           this.getDados();
-          this.getFuncionarios();
+          this.funcionarioSelecionado = this.dados.funcionarios[1];
         }
 
         data_atual: any;
@@ -41,9 +41,22 @@
         
         mostrarSegmentFuncionario: boolean = false; //isso aq esconde o seletor de funcinario
 
-        dados: any[] = [];
-        funcionarios: any[] = [];
+
+        dados = {
+          funcionarios:[
+            { nome:'Henrique', selecionado:false } ,
+            { nome:'Cristiano', selecionado:false },
+            { nome:'luis', selecionado:false },
+            { nome:'marcelo', selecionado:false },
+            { nome:'pedro', selecionado:false },
+            { nome:'joao', selecionado:false },
+            { nome:'fabiano', selecionado:false },
+            { nome:'douglas', selecionado:false },
+          ],
+        }
+        
         funcionarioSelecionado: any;
+
 
         getDados() {
           const remoteCollectionName = 'DADOS';
@@ -58,19 +71,19 @@
             })
         }
 
-        getFuncionarios() {
-          const remoteCollectionName = 'DADOS';
+        // getFuncionarios() {
+        //   const remoteCollectionName = 'DADOS';
       
-          this.crudService.fetchAll(remoteCollectionName)
-            .then((funcionarios: any[]) => {
-              this.funcionarios = funcionarios;
-              console.log(this.funcionarios);
-              this.funcionarioSelecionado = this.funcionarios[0];
-            })
-            .catch((error) => {
-              console.error('Erro ao obter nomes de funcionários:', error);
-            });
-        }
+        //   this.crudService.fetchAll(remoteCollectionName)
+        //     .then((funcionarios: any[]) => {
+        //       this.funcionarios = funcionarios;
+        //       console.log(this.funcionarios);
+        //       this.funcionarioSelecionado = this.funcionarios[0];
+        //     })
+        //     .catch((error) => {
+        //       console.error('Erro ao obter nomes de funcionários:', error);
+        //     });
+        // }
 
         anteriorQuinzena() {
           let diaAtual = Number(this.data.dia);
@@ -119,9 +132,9 @@
         async abrirSelectFuncionario() {
           const alert = await this.alertCtrl.create({
             header: 'Selecione um Funcionário',
-            inputs: this.funcionarios.map((funcionario) => ({
+            inputs: this.dados.funcionarios.map((funcionario) => ({
               type: 'radio',
-              label: funcionario,
+              label: funcionario.nome, // Corrigido para ser uma string
               value: funcionario,
               checked: funcionario === this.funcionarioSelecionado,
             })),
@@ -140,7 +153,7 @@
               },
             ],
           });
-        
+      
           await alert.present();
         }
   
